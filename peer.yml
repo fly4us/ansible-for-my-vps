@@ -1,0 +1,6 @@
+---
+- name: Peer VPS
+  hosts: peer
+  sudo: yes
+  roles:
+    - supervisor
