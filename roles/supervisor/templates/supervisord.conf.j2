@@ -1,0 +1,83 @@
+; Sample supervisor config file.
+;
+; For more information on the config file, please see:
+; http://supervisord.org/configuration.html
+;
+; Notes:
+;  - Shell expansion ("~" or "$HOME") is not supported.  Environment
+;    variables can be expanded using this syntax: "%(ENV_HOME)s".
+;  - Comments must have a leading space: "a=b ;comment" not "a=b;comment".
+
+{% if supervisor_unix_http_server is defined %}
+[unix_http_server]
+{% for (key,value) in supervisor_unix_http_server.iteritems() %}
+{{ key }}={{ value }}
+{% endfor %}
+{% endif %}
+
+{% if supervisor_inet_http_server is defined %}
+[inet_http_server]
+{% for (key,value) in supervisor_inet_http_server.iteritems() %}
+{{ key }}={{ value }}
+{% endfor %}
+{% endif %}
+
+{% if supervisor_supervisord is defined %}
+[supervisord]
+{% for (key, value) in supervisor_supervisord.iteritems() %}
+{{ key }}={{ value }}
+{% endfor %}
+{% endif %}
+
+; the below section must remain in the config file for RPC
+; (supervisorctl/web interface) to work, additional interfaces may be
+; added by defining them in separate rpcinterface: sections
+[rpcinterface:supervisor]
+supervisor.rpcinterface_factory = supervisor.rpcinterface:make_main_rpcinterface
+
+{% if supervisor_supervisorctl is defined%}
+[supervisorctl]
+{% for (key, value) in supervisor_supervisorctl.iteritems() %}
+{{ key }}={{ value }}
+{% endfor %}
+{% endif %}
+
+{% if supervisor_programs is defined %}
+{% for item in supervisor_programs %}
+{% for (key, value) in item.iteritems() %}
+[program:{{ key }}]
+{% for (innerkey, innervalue) in value.iteritems() %}
+{{ innerkey }}={{ innervalue }}
+{% endfor %}
+{% endfor %}
+{% endfor %}
+{% endif %}
+
+{% if supervisor_eventlisteners is defined %}
+{% for item in supervisor_eventlisteners %}
+{% for (key, value) in item.iteritems() %}
+[eventlistener:{{ key }}]
+{% for (innerkey, innervalue) in value.iteritems() %}
+{{ innerkey }}={{ innervalue }}
+{% endfor %}
+{% endfor %}
+{% endfor %}
+{% endif %}
+
+{% if supervisor_groups is defined %}
+{% for item in supervisor_groups %}
+{% for (key, value) in item.iteritems() %}
+[group:{{ key }}]
+{% for (innerkey, innervalue) in value.iteritems() %}
+{{ innerkey }}={{ innervalue }}
+{% endfor %}
+{% endfor %}
+{% endfor %}
+{% endif %}
+
+{% if supervisor_include is defined %}
+[include]
+{% for (key, value) in supervisor_include.iteritems() %}
+{{ key }}={{ value }}
+{% endfor %}
+{% endif %}

@@ -1,0 +1,27 @@
+---
+- name: Install supervisord
+  apt:
+    name=supervisor
+    state=present
+  sudo: yes
+
+- name: Set permissions on supervisor config and log directories
+  file:
+    path={{ item }}
+    owner={{ supervisor_owner }}
+    group={{ supervisor_group }}
+    state=directory
+    mode=0755
+  with_items:
+     - /etc/supervisor
+     - /etc/supervisor/conf.d
+     - /var/log/supervisor
+  sudo: yes
+
+- name: Install the supervisor configuration file
+  template:
+    src: supervisord.conf.j2
+    dest: /etc/supervisor/supervisord.conf
+    owner: "{{ supervisor_owner }}"
+    group: "{{ supervisor_group }}"
+  notify: restart supervisor
