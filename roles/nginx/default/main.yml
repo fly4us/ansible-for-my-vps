@@ -1,0 +1,7 @@
+---
+nginx_owner: root
+nginx_group: root
+
+web_owner: www-data
+web_group: www-data
+web_root_path: /var/www

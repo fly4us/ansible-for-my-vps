@@ -1,0 +1,37 @@
+---
+- name: install nginx
+  apt:
+    name=nginx-full
+    state=present
+  sudo: yes
+
+- name: remove default nginx site
+  file:
+    path=/etc/nginx/sites-enabled/default
+    state=absent
+  sudo: yes
+  notify: restart nginx
+
+- name: set nginx directories permissions
+  file:
+    path={{ item }}
+    owner={{ nginx_owner }}
+    group={{ nginx_group }}
+    state=directory
+    mode=0755
+  with_items:
+    - /var/log/nginx
+    - /etc/nginx
+    - /etc/nginx/conf.d
+    - /etc/nginx/sites-available
+    - /etc/nginx/sites-enabled
+  sudo: yes
+
+- name: setup webapp root folder with the correct permissions
+  file:
+    path={{ web_root_path }}
+    owner={{ web_owner }}
+    group={{ web_group }}
+    state=directory
+    mode=0774
+  sudo: yes
