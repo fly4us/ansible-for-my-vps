@@ -1,7 +1,7 @@
 ---
 - name: restart app
   supervisorctl:
-    name=${app_name}
+    name={{ app_name }}
     state=restarted
 
 - name: restart nginx
