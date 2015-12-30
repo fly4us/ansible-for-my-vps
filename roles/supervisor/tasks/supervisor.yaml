@@ -24,4 +24,5 @@
     dest: /etc/supervisor/supervisord.conf
     owner: "{{ supervisor_owner }}"
     group: "{{ supervisor_group }}"
+  sudo: yes
   notify: restart supervisor
