@@ -1,0 +1,17 @@
+---
+- name: install common packages needed for python application development
+  apt:
+    pkg=$item
+    state=present
+  with_items:
+    - python-setuptools
+    - python-pip
+  sudo: yes
+
+- name: install various libraries with pip
+  pip:
+    name=$item
+    state=latest
+  with_items:
+    - virtualenv
+  sudo: yes
