@@ -1,7 +1,7 @@
 ---
 - name: install common packages needed for python application development
   apt:
-    pkg=$item
+    pkg={{ item }}
     state=present
   with_items:
     - python-setuptools
@@ -10,7 +10,7 @@
 
 - name: install various libraries with pip
   pip:
-    name=$item
+    name={{ item }}
     state=latest
   with_items:
     - virtualenv
