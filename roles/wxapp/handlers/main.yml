@@ -1,0 +1,10 @@
+---
+- name: restart app
+  supervisorctl:
+    name=${app_name}
+    state=restarted
+
+- name: restart nginx
+  service:
+    name=nginx
+    state=restarted

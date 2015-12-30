@@ -1,80 +1,68 @@
 ---
-- name: install wx app
-  tasks:
-    - name: create app directory
-      file:
-        path={{ web_app_path }}/${item}
-        state=directory
-        mode=0755
-        owner={{ web_owner }}
-        group={{ web_group }}
-      with_items:
-        - .
-        - src
-        - run
-        - log
-        - env
-      sudo: yes
+- name: create app directory
+  file:
+    path={{ web_app_path }}/${item}
+    state=directory
+    mode=0755
+    owner={{ web_owner }}
+    group={{ web_group }}
+  with_items:
+    - .
+    - src
+    - run
+    - log
+    - env
+  sudo: yes
 
-    - name: deploy app src
-      copy:
-        src=./
-        dest={{ web_app_path }}/src/
-        owner={{ web_owner }}
-        group={{ web_group }}
-        state=directory
-      sudo: yes
+- name: deploy app src
+  copy:
+    src=./
+    dest={{ web_app_path }}/src/
+    owner={{ web_owner }}
+    group={{ web_group }}
+    state=directory
+  sudo: yes
 
-    - name: Install the uwsgi app configuration file
-      template:
-        src=uwsgi-wxapp.ini
-        dest={{ web_app_path }}/src/uwsgi.ini
-        owner={{ web_owner }}
-        group={{ web_group }}
-      sudo: yes
+- name: Install the uwsgi app configuration file
+  template:
+    src=uwsgi-wxapp.ini
+    dest={{ web_app_path }}/src/uwsgi.ini
+    owner={{ web_owner }}
+    group={{ web_group }}
+  sudo: yes
 
-    - name: install dependencies into virtualenv
-      pip:
-        requirements={{ web_app_path }}/src/requirements.txt
-        virtualenv={{ web_app_path }}/env
-        state=present
-      sudo: yes
+- name: install dependencies into virtualenv
+  pip:
+    requirements={{ web_app_path }}/src/requirements.txt
+    virtualenv={{ web_app_path }}/env
+    state=present
+  sudo: yes
 
-    - name: create supervisor program config for [uwsgi]
-      template:
-        src=uwsgi-wxapp.conf
-        dest=/etc/supervisor/conf.d/uwsgi-wxapp.conf
-      notify:
-        - restart supervisor
-      sudo: yes
+- name: create supervisor program config for [uwsgi]
+  template:
+    src=uwsgi-wxapp.conf
+    dest=/etc/supervisor/conf.d/uwsgi-wxapp.conf
+  notify:
+    - restart supervisor
+  sudo: yes
 
-    - name: link nginx config
-      file:
-        src=nginx-wxapp.conf
-        dest=/etc/nginx/sites-enabled/nginx-wxapp.conf
-        state=link
-      sudo: yes
+- name: link nginx config
+  file:
+    src=nginx-wxapp.conf
+    dest=/etc/nginx/sites-enabled/nginx-wxapp.conf
+    state=link
+  sudo: yes
 
-    - name: create nginx site config
-      template:
-        src=nginx-wxapp.conf
-        dest=/etc/nginx/sites-available/nginx-wxapp.conf
-      notify:
-        - restart nginx
-      sudo: yes
+- name: create nginx site config
+  template:
+    src=nginx-wxapp.conf
+    dest=/etc/nginx/sites-available/nginx-wxapp.conf
+  notify:
+    - restart nginx
+  sudo: yes
 
-    - name: start app
-      supervisorctl:
-        name=${app_name}
-        state=started
-
-  handlers:
-    - name: restart app
-      supervisorctl:
-        name=${app_name}
-        state=restarted
-
-    - name: restart nginx
-      service:
-        name=nginx
-        state=restarted
+- name: start app
+  supervisorctl:
+    name=${app_name}
+    state=started
+  sudo: yes
