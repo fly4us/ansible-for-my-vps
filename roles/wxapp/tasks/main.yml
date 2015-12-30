@@ -45,13 +45,6 @@
     - restart supervisor
   sudo: yes
 
-- name: link nginx config
-  file:
-    src=nginx-wxapp.conf
-    dest=/etc/nginx/sites-enabled/nginx-wxapp.conf
-    state=link
-  sudo: yes
-
 - name: create nginx site config
   template:
     src=nginx-wxapp.conf
@@ -60,8 +53,15 @@
     - restart nginx
   sudo: yes
 
+- name: link nginx config
+  file:
+    src=/etc/nginx/sites-available/nginx-wxapp.conf
+    dest=/etc/nginx/sites-enabled/nginx-wxapp.conf
+    state=link
+  sudo: yes
+
 - name: start app
   supervisorctl:
-    name=${app_name}
+    name={{ app_name }}
     state=started
   sudo: yes
