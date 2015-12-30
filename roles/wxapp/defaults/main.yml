@@ -10,7 +10,7 @@ app_port: 9000
 wsgi_file: wxapp.py
 wsgi_callable: app
 
-web_app_path: "{{ web_root_path }}/{{ app_name }}/"
+web_app_path: "{{ web_root_path }}/{{ app_name }}"
 
 app_token:
 app_secret_key:

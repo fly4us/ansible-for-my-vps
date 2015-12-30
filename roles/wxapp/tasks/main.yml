@@ -1,7 +1,7 @@
 ---
 - name: create app directory
   file:
-    path={{ web_app_path }}/${item}
+    path={{ web_app_path }}/{{ item }}
     state=directory
     mode=0755
     owner={{ web_owner }}
