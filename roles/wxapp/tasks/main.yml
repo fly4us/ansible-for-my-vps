@@ -20,7 +20,6 @@
     dest={{ web_app_path }}/src/
     owner={{ web_owner }}
     group={{ web_group }}
-    state=directory
   sudo: yes
 
 - name: Install the uwsgi app configuration file
