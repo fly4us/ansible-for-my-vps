@@ -1,0 +1,16 @@
+---
+server_name: peer.fly4us.net
+
+web_owner: www-data
+web_group: www-data
+web_root_path: /var/www
+
+app_name: wxapp
+app_port: 9000
+wsgi_file: wxapp.py
+wsgi_callable: app
+
+web_app_path: {{ web_root_path }}/{{ app_name }}/
+
+app_token:
+app_secret_key:
