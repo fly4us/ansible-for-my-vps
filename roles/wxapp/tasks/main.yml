@@ -22,6 +22,12 @@
     group={{ web_group }}
   sudo: yes
 
+- name: deploy app src
+  template:
+    src=wxapp.py
+    dest={{ web_app_path }}/src/
+  sudo: yes
+
 - name: Install the uwsgi app configuration file
   template:
     src=uwsgi-wxapp.ini
