@@ -6,13 +6,13 @@ from flask import Flask, request, render_template
 from werkzeug.utils import secure_filename
 
 
-app_root_path = {{ web_app_path }}
-app_token = {{ app_token }}
+app_root_path = "{{ web_app_path }}"
+app_token = "{{ app_token }}"
 app_port = {{ app_port }}
 
 app = Flask(__name__)
 app.debug = False
-app.secret_key = {{ app_secret_key }}
+app.secret_key = "{{ app_secret_key }}"
 
 
 @app.route('/wxapp', methods=['GET'])
