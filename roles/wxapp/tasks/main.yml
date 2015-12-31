@@ -88,7 +88,7 @@
       # any traffic leaving eth0 from private land apply NAT Masquerade
       #-A POSTROUTING -o eth0 -s 192.168.1.0/24 -j MASQUERADE
       # don't delete the 'COMMIT' line or these nat table rules won't be processed
-      #COMMIT
+      COMMIT
   notify:
     - reload ufw
   sudo: yes
