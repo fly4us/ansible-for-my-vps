@@ -55,8 +55,6 @@
   template:
     src=nginx-wxapp.conf
     dest=/etc/nginx/sites-available/nginx-wxapp.conf
-  notify:
-    - restart nginx
   sudo: yes
 
 - name: link nginx config
@@ -64,10 +62,12 @@
     src=/etc/nginx/sites-available/nginx-wxapp.conf
     dest=/etc/nginx/sites-enabled/nginx-wxapp.conf
     state=link
+  notify:
+    - restart nginx
   sudo: yes
 
 - name: start app
   supervisorctl:
     name={{ app_name }}
-    state=started
+    state=restarted
   sudo: yes
