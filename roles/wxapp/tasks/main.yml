@@ -110,16 +110,17 @@
 #    - reload ufw
 #  sudo: yes
 
-- name:
+- name: open tcp port 9000
   ufw:
     rule: allow
     port: 9000
     proto: tcp
+    to: 127.0.0.1
   notify:
     - reload ufw
   sudo: yes
 
-- name:
+- name: allow forward 80 -> 9000
   ufw:
     rule: allow
     route: yes
