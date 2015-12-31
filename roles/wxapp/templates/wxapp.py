@@ -112,7 +112,7 @@ def plans_info(msg):
     info = "FETCH FAILED!"
 
     try:
-        file = open(app_root_path + "plans.txt", "r")
+        file = open(app_root_path + "/plans.txt", "r")
         lines = file.readlines()
         info = " ".join(lines)
     finally:
@@ -125,7 +125,7 @@ def fhplans_info(msg):
     info = "FETCH FAILED!"
 
     try:
-        file = open(app_root_path + "fhplans.txt", "r")
+        file = open(app_root_path + "/fhplans.txt", "r")
         lines = file.readlines()
         info = " ".join(lines)
     finally:
