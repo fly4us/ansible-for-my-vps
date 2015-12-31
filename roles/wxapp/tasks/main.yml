@@ -66,6 +66,22 @@
     - restart nginx
   sudo: yes
 
+- name: set the ipv4 ip forward
+  lineinfile:
+    dest: /etc/ufw/sysctl.conf
+    regexp: "net.ipv4.ip_forward="
+    line: "net.ipv4.ip_forward=1"
+    state: present
+  sudo: yes
+
+- name: set the ip forward in ufw
+  lineinfile:
+    dest: /etc/default/ufw
+    regexp: "DEFAULT_FORWARD_POLICY="
+    line: 'DEFAULT_FORWARD_POLICY="ACCEPT"'
+    state: present
+  sudo: yes
+
 - name: remove forward in /etc/ufw/before.rules
   blockinfile:
     dest: /etc/ufw/before.rules
