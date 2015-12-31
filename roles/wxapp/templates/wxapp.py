@@ -115,8 +115,11 @@ def plans_info(msg):
         file = open(app_root_path + "/plans.txt", "r")
         lines = file.readlines()
         info = " ".join(lines)
-    finally:
         file.close()
+    except Exception as ex:
+        info = ex
+    #finally:
+    #    file.close()
 
     return response_text_msg(msg, info[:2000])
 
