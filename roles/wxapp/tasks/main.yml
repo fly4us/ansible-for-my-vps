@@ -88,27 +88,27 @@
     marker: "# <!-- {mark} ANSIBLE MANAGED BLOCK -->"
     content: ""
 
-#
-#- name: insert forward in /etc/ufw/before.rules
-#  blockinfile:
-#    dest: /etc/ufw/before.rules
-#    marker: "# <!-- {mark} ANSIBLE MANAGED BLOCK -->"
-#    content: |
-#      # NAT Table rules
-#      *nat
-#      :PREROUTING ACCEPT [0:0]
-#      :POSTROUTING ACCEPT [0:0]
-#      :OUTPUT ACCEPT [0:0]
-#      # Forward traffic coming from eth0 (internet) to port 80 send to {{ app_port }} for processing
-#      -A PREROUTING -i eth0 -p tcp -m tcp --dport 80 -j REDIRECT --to-port {{ app_port }}
-#      #-A PREROUTING -i eth0 -p tcp -m tcp --dport 443 -j DNAT --to-destination 192.168.1.2
-#      # any traffic leaving eth0 from private land apply NAT Masquerade
-#      #-A POSTROUTING -o eth0 -s 192.168.1.0/24 -j MASQUERADE
-#      # don't delete the 'COMMIT' line or these nat table rules won't be processed
-#      COMMIT
-#  notify:
-#    - reload ufw
-#  sudo: yes
+- name: insert forward in /etc/ufw/before.rules
+  blockinfile:
+    dest: /etc/ufw/before.rules
+    marker: "# <!-- {mark} ANSIBLE MANAGED BLOCK -->"
+    content: |
+      # NAT Table rules
+      *nat
+      :PREROUTING ACCEPT [0:0]
+      :POSTROUTING ACCEPT [0:0]
+      :OUTPUT ACCEPT [0:0]
+      # Forward traffic coming from eth0 (internet) to port 80 send to {{ app_port }} for processing
+      -A PREROUTING -i eth0 -p tcp -m tcp --dport {{ app_port }} -j REDIRECT --to-port 55555
+      -A PREROUTING -i eth0 -p tcp -m tcp --dport 80 -j REDIRECT --to-port {{ app_port }}
+      #-A PREROUTING -i eth0 -p tcp -m tcp --dport 443 -j DNAT --to-destination 192.168.1.2
+      # any traffic leaving eth0 from private land apply NAT Masquerade
+      #-A POSTROUTING -o eth0 -s 192.168.1.0/24 -j MASQUERADE
+      # don't delete the 'COMMIT' line or these nat table rules won't be processed
+      COMMIT
+  notify:
+    - reload ufw
+  sudo: yes
 
 - name: open tcp port 9000
   ufw:
@@ -116,18 +116,6 @@
     port: 9000
     proto: tcp
     to: 127.0.0.1
-  notify:
-    - reload ufw
-  sudo: yes
-
-- name: allow forward 80 -> 9000
-  ufw:
-    rule: allow
-    route: yes
-    proto: tcp
-    from_port: 80
-    to_ip: 127.0.0.1
-    to_port: 9000
   notify:
     - reload ufw
   sudo: yes
