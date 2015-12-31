@@ -115,7 +115,6 @@
     rule: allow
     port: 9000
     proto: tcp
-    to: 127.0.0.1
   notify:
     - reload ufw
   sudo: yes
