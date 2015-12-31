@@ -69,13 +69,13 @@
 - name: remove forward in /etc/ufw/before.rules
   blockinfile:
     dest: /etc/ufw/before.rules
-    marker: "<!-- {mark} ANSIBLE MANAGED BLOCK -->"
+    marker: "# <!-- {mark} ANSIBLE MANAGED BLOCK -->"
     content: ""
 
 - name: insert forward in /etc/ufw/before.rules
   blockinfile:
     dest: /etc/ufw/before.rules
-    marker: "<!-- {mark} ANSIBLE MANAGED BLOCK -->"
+    marker: "# <!-- {mark} ANSIBLE MANAGED BLOCK -->"
     content: |
       # NAT Table rules
       *nat
